@@ -1,0 +1,388 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Eminem - Discography</title>
+    <script type="text/javascript" src="./scripts/three.js"></script>
+    <script type="text/javascript" src="./scripts/OrbitControls.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Oswald';
+        }
+        .menu{
+            position: absolute;
+            background:#0000;
+            height: 100%;
+            width: 15%;
+            left: 0;
+            overflow: auto;
+            padding: 5px;
+            padding-top: 15px;
+            color: #fff;
+            letter-spacing: 0.2px;
+            font-size: 15px;
+            text-align: center;
+            border-right: 1px solid #eaeaea1a;
+        }
+        .album{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-bottom:20px;
+            padding-top:20px;
+            border-bottom: 1px solid #eaeaea1a;
+        }
+        .album:hover{
+            background:#a50101;
+        }
+        .album img{
+            width:80px;
+        }
+        .rightNav{
+            position: absolute;
+            right: 0;
+            top: 40%;
+            color: #fff;
+        }
+        .rightNav:hover{
+            background:#fff;
+        }
+        .github-corner{
+            position:absolute;
+            top:0;
+            right:0;
+        }
+        .logo{
+            position: fixed;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            top: 15px;
+            left: 0;
+            right: 0;
+        }
+        .credits{
+            position: absolute;
+            right: 0;
+            bottom: 1vh;
+            display: flex;
+            flex-direction: column;
+            color: #fafafa;
+        }
+        .credits span:first-child{
+            text-decoration:underline;
+        }
+        .credits span:first-child a{
+            text-decoration: none;
+            color:#fafafa
+        }
+        .credits span:nth-child(2){
+            font-size:10px;
+        }
+    </style>
+    <script>
+        const albums=[
+            {
+                id: 1,
+                name: 'Music to be Murdered By - Side B',
+                year:2020,
+                front:true,
+                back:false,
+                contrastColor:0xb60303,
+                link:'https://music.apple.com/in/album/music-to-be-murdered-by-side-b-deluxe-edition/1545467359'
+            },
+            {
+                id: 2,
+                name: 'Music to be Murdered By',
+                year:2020,
+                front:true,
+                back:true,
+                contrastColor: 0xb60303,
+                link:'https://music.apple.com/in/album/music-to-be-murdered-by/1495267282'
+            },
+            {
+                id: 3,
+                name: 'Kamikaze',
+                year:2018,
+                front:true,
+                back:true,
+                link:'https://music.apple.com/in/album/kamikaze/1434770366'
+            },
+            {
+                id: 4,
+                name: 'Revival',
+                year:2017,
+                front:true,
+                back:true,
+                link:'https://music.apple.com/in/album/revival/1440901083'
+            },
+            {
+                id: 5,
+                name: 'Marshall Mathers LP 2',
+                year:2013,
+                front:true,
+                back:true,
+                link:'https://music.apple.com/in/album/the-marshall-mathers-lp2-deluxe/1440862900'
+            },
+            {
+                id: 6,
+                name: 'Recovery',
+                year:2010,
+                front:true,
+                back:true,
+                link: 'https://music.apple.com/in/album/recovery/1440781199'
+            },
+            {
+                id: 7,
+                name: 'Relapse',
+                year:2009,
+                front:true,
+                back:false,
+                link: 'https://music.apple.com/in/album/relapse-deluxe/1440783088'
+            },
+            {
+                id: 8,
+                name: 'Encore',
+                year:2004,
+                front:true,
+                back:true,
+                link: 'https://music.apple.com/in/album/encore/1440751265'
+            },
+            {
+                id: 9,
+                name: 'The Eminem Show',
+                year:2002,
+                front:true,
+                back:true,
+                link: 'https://music.apple.com/in/album/the-eminem-show/1440903530'
+            },
+            {
+                id: 10,
+                name: '8-Mile',
+                year:2002,
+                front:true,
+                back:true,
+                link: 'https://music.apple.com/in/album/8-mile-music-from-and-inspired-by-the-motion-picture/1440903339'
+            },
+            {
+                id: 11,
+                name: 'The Marshall Mathers LP',
+                year:2000,
+                front:true,
+                back:false,
+                link: 'https://music.apple.com/in/album/the-marshall-mathers-lp/1453737727'
+            },
+            {
+                id: 12,
+                name: 'The Slim Shady LP',
+                year:1999,
+                front:true,
+                back:false,
+                link: 'https://music.apple.com/in/album/the-slim-shady-lp-expanded-edition/1453196979'
+            },
+            {
+                id: 13,
+                name: 'Infinite',
+                year:1996,
+                front:true,
+                back:false,
+                link: 'https://music.apple.com/in/album/infinite-single/1176507476'
+            },
+        ]
+    </script>
+
+</head>
+
+    <body>
+        <div class='wrapper'>
+            <div class='menu' id='menu'>
+            </div>
+            <canvas id='library'></canvas>
+            <div class="rightNav" id='rightNav'></div>
+            <div class="github-corner">
+                <span><a href="https://github.com/kaustubh03/eminem-discography.git"><img
+                            src="https://diamond.kaustubh.dev/images/github-corner-right.svg"></a></span>
+            </div>
+            <div class='credits'>
+                <span><a href='https://github.com/kaustubh03'>Developed by Kaustubh Saxena</a></span>
+                <span>All Images are property of their respective owners</span>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        let selectedAlbum = albums[0];
+        loadMenuItems = () =>{
+            const menuWrapper = document.getElementById('menu');
+            menu.innerHTML = `<div class='logo'><img width="180" src='./images/logo.png' />
+                <small>Discography</small>
+                </div>`;
+            renderRightMenu();
+            return albums.map(item=>{
+                menuWrapper.innerHTML += `<div onClick='selectAlbum(this)' class='album' id='${item.id}'>
+                        <img src='./images/albums/album_${item.id}_front.png' alt='${item.name}' />
+                        <span>${item.name}</span>
+                        <span>${item.year}</span>
+                    </div>`
+            });
+        }
+
+        renderRightMenu = () =>{
+            const rightNav = document.getElementById('rightNav');
+            rightNav.innerHTML += `<a href="${selectedAlbum.link}"><img width="80" src='https://cdn0.iconfinder.com/data/icons/internet-2020/1080/Applemusicandroid-512.png'/></a>`;
+        }
+
+        window.onload = function () {
+            /*
+                JS Functionalities
+            */
+            loadMenuItems();
+            
+            // Three JS Album Show Case ground
+            var renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('library'), alpha: true, opacity: 0.5 });
+            renderer.setClearColor(0x000000, 0.9);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Create the scene to hold the object
+            var scene = new THREE.Scene();
+
+            // Create the camera
+            var camera = new THREE.PerspectiveCamera(
+                35,                                     // Field of view
+                window.innerWidth / window.innerHeight, // Aspect ratio
+                0.1,                                    // Near plane distance
+                1000                                    // Far plane distance
+            );
+
+            // Position the camera
+            camera.position.set(-15, 10, 20);
+            // Lights
+            var light = new THREE.PointLight(0xffffff, .4);
+            light.position.set(10, 10, 10);
+            scene.add(light);
+
+            ambientLight = new THREE.AmbientLight(0xbbbbbb);
+            scene.add(ambientLight);
+            //Background star Geometry
+            var starGeo = new THREE.Geometry();
+            for (let i = 0; i < 50000; i++) {
+                let star = new THREE.Vector3(
+                    Math.random() * 600 - 300,
+                    Math.random() * 600 - 300,
+                    Math.random() * 600 - 300
+                );
+                starGeo.vertices.push(star);
+            }
+
+            let sprite = new THREE.TextureLoader().load('./images/star.png');
+            let starMaterial = new THREE.PointsMaterial({
+                color: 0xeaeaea,
+                size: 0.3,
+                map: sprite
+            });
+            var stars = new THREE.Points(starGeo, starMaterial);
+            scene.add(stars);
+
+            // Materials
+            // Load the textures (album images)
+            var textureLoader = new THREE.TextureLoader();
+            var albumCoverTexture = textureLoader.load(`./images/albums/album_${selectedAlbum.id}_front.png`);
+            var albumBackTexture = selectedAlbum.back ? 
+            textureLoader.load(`./images/albums/album_${selectedAlbum.id}_back.png`) : textureLoader.load(`./images/albums/cd_back.png`);
+            var albumPagesTexture = textureLoader.load('./images/pages.png');
+            var albumPagesTopBottomTexture = textureLoader.load('./images/pages_top_bottom.png');
+
+
+            // Use the linear filter for the textures to avoid blurriness
+            albumCoverTexture.minFilter
+                = albumBackTexture.minFilter
+                = albumPagesTexture.minFilter
+                = albumPagesTopBottomTexture.minFilter
+                = THREE.LinearFilter;
+
+
+            // Create the materials
+
+            var albumCover = new THREE.MeshLambertMaterial({ color: 0xffffff, map: albumCoverTexture });
+            var albumSpine = new THREE.MeshLambertMaterial({ color: 0x000000 }); // set contrast color
+            var albumBack = new THREE.MeshLambertMaterial({ color: 0xffffff, map: albumBackTexture });
+            var albumPages = new THREE.MeshLambertMaterial({ color: selectedAlbum.contrastColor });
+            var albumPagesTopBottom = new THREE.MeshLambertMaterial({ color: selectedAlbum.contrastColor });
+
+            var materials = [
+                albumPages,          // Right side
+                albumSpine,          // Left side
+                albumPagesTopBottom, // Top side
+                albumPagesTopBottom, // Bottom side
+                albumCover,          // Front side
+                albumBack            // Back side
+            ];
+
+            // Create the Album and add it to the scene
+            var album = new THREE.Mesh(new THREE.BoxGeometry(10, 10, .2, 4, 4, 1), materials);
+            album.position.set(0,0,0);
+            scene.add(album);
+
+
+            // Create the orbit controls for the camera
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.25;
+            controls.enablePan = false;
+            controls.enableZoom = false;
+
+            // Begin the animation
+            animate();
+
+            /*
+              Animate a frame
+            */
+
+            function animate() {
+                album.rotation.y += 0.005;
+
+                // Update the orbit controls
+                controls.update();
+                
+                // Render the frame
+                renderer.render(scene, camera);
+
+                // Keep the animation going
+                requestAnimationFrame(animate);
+            }
+            
+            /*
+                Selected Album
+            */
+            selectAlbum = (e) => {
+                const filteredAlbum = albums.filter(item => {
+                    return item.id.toString() === e.id && item;
+                });
+                selectedAlbum = filteredAlbum.length ? filteredAlbum[0] : null;
+                
+                // Update Textures
+                updateTextures();
+            }
+
+            updateTextures = () =>{
+                var updatedAlbumCoverTexture = textureLoader.load(`./images/albums/album_${selectedAlbum.id}_front.png`, function (tex) {
+                    albumCover.map = tex;
+                });
+                const backPath = selectedAlbum.back ? `./images/albums/album_${selectedAlbum.id}_back.png` : `./images/albums/cd_back.png`; 
+                var updatedAlbumBackTexture = textureLoader.load(backPath, function (tex){
+                    albumBack.map = tex;
+                });       
+            }
+        }
+
+    </script>
+
+</html>

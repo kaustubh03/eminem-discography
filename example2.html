@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin:0px;
+        }
+        canvas {
+            background-color: brown;
+        }
+    </style>
+</head>
+<body>
+    <canvas id='myCanvas' />
+</body>
+<script src='./scripts/three.js'></script>
+<script src='./fontjson.js'></script>
+<script>
+    // Add a Renderer
+    var renderer = new THREE.WebGLRenderer({canvas:document.getElementById('myCanvas'), antialias:true});
+    renderer.setClearColor(0x00ff00);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Add a Camera; Args are FOV, Aspect ratio, near, far
+    var camera = new THREE.PerspectiveCamera(35, window.innerWidth/window.innerHeight, 0.1, 3000); 
+
+    // Add a Scene - it is the container of all elements.
+    var scene = new THREE.Scene();
+
+    // Add Lights - args - color and intensity
+    var light = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(light);
+
+    var light1 = new THREE.PointLight(0xffffff, 0.5);
+    scene.add(light1)
+
+    // Text Geometry Example
+    // Font Loader
+    // var loader = new THREE.FontLoader();
+    // var font = loader.parse(fontJSON);
+    // var geometry = new THREE.TextGeometry('my Text', {font:font, size:120, height:10, material:0, bevelThickness:1, extrudeMaterial:1})
+    
+    // Add a Box Geometry example - args - x,y,z
+    // var geometry = new THREE.BoxGeometry(100, 100, 100);
+    
+    // Geometry example with vertices
+    // var geometry = new THREE.Geometry();
+    // geometry.vertices.push(
+    //     new THREE.Vector3(-10,10,0),
+    //     new THREE.Vector3(-10, -10, 0),
+    //     new THREE.Vector3(10, -10, 0)
+    // );
+
+    // geometry.faces.push(new THREE.Face3(0,1,2))
+
+
+    // Update Geometry Example
+    var geometry = new THREE.PlaneGeometry(100, 100);
+
+     // Add a Material - BasicMaterial, LambertMaterial
+    var material = new THREE.MeshLambertMaterial({color:0xffff58});
+
+    // Add a Mesh - args geometry, material
+    var mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(0,0,-1000)
+    scene.add(mesh);
+
+    // Render using renderer
+    // renderer.render(scene, camera);
+
+    // renderer for animation
+    requestAnimationFrame(render);
+    var delta = 0;
+
+    function render(){
+        // mesh.rotation.x +=0.01;
+        // mesh.rotation.y +=0.01;
+        delta += 0.1;
+        geometry.vertices[0].x = -25 + Math.sin(delta) * 50;
+        geometry.verticesNeedUpdate = true;
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+
+    }
+</script>
+</html>

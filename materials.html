@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin:0px;
+        }
+        canvas {
+            background-color: brown;
+        }
+    </style>
+</head>
+<body>
+    <canvas id='myCanvas' />
+</body>
+<script src='./scripts/three.js'></script>
+<script src='./fontjson.js'></script>
+<script>
+    // Add a Renderer
+    var renderer = new THREE.WebGLRenderer({canvas:document.getElementById('myCanvas'), antialias:true});
+    renderer.setClearColor(0x00ff00);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Add a Camera; Args are FOV, Aspect ratio, near, far
+    var camera = new THREE.PerspectiveCamera(35, window.innerWidth/window.innerHeight, 0.1, 3000); 
+
+    // Add a Scene - it is the container of all elements.
+    var scene = new THREE.Scene();
+
+    // Add Lights - args - color and intensity
+    var light = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(light);
+
+    var light1 = new THREE.PointLight(0xffffff, 0.5);
+    scene.add(light1)
+
+    // Add a Material - BasicMaterial, LambertMaterial
+    var material = new THREE.MeshLambertMaterial({ color: 0xF3FFE2, 
+        transparent:true, 
+        // opacity:1, 
+        // emmisive:0xffffff,
+        // emmisiveIntensity:0.1
+        side:THREE.frontSide
+     });
+    
+
+    // Add a Box Geometry example - args - x,y,z
+    var geometry = new THREE.BoxGeometry(100, 100, 100);
+    
+    // Add a Mesh - args geometry, material
+    var mesh = new THREE.Mesh(geometry, material);
+    mesh.position.z = -1000;
+    mesh.position.x = -100
+    scene.add(mesh);
+
+    var geometry2 = new THREE.SphereGeometry(50,20,20);
+    var mesh2 = new THREE.Mesh(geometry2, material);
+    mesh2.position.z = -1000;
+    mesh2.position.x = 100
+    scene.add(mesh2);
+
+    var geometry3 = new THREE.PlaneGeometry(10000,10000,100, 100);
+    var mesh3 = new THREE.Mesh(geometry3, material);
+    mesh3.rotation.x = -90 * Math.PI/180;
+    mesh3.position.y = -100;
+    scene.add(mesh3);
+    
+    
+    // renderer for animation
+    requestAnimationFrame(render);
+
+    function render(){
+        mesh.rotation.x +=0.01;
+        mesh.rotation.y +=0.01;
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+
+    }
+</script>
+</html>
